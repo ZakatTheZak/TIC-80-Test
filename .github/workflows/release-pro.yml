@@ -383,22 +383,7 @@ jobs:
             exit 1
           }
 
-      - name: Push to itch.io
-        env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-        run: |
-          if [ -z "$BUTLER_API_KEY" ]; then
-            echo "BUTLER_API_KEY is not set — refusing to report success for a push that never happened" >&2
-            exit 1
-          fi
-          VER="${TAG#v}"
-          curl -L -o butler.zip https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default
-          unzip -q butler.zip
-          chmod +x butler
-          # The layouts itch needs (see the windows job above).
-          mkdir -p stage/android-pro
-          cp build/android-sokol/tic80-pro.apk stage/android-pro/tic80-android-pro.apk
-          ./butler push stage/android-pro nesbox/tic80:android-pro --userversion "$VER"
+
 
   # Free builds are assembled by release.yml (into the draft release); once
   # the release is published, push those assets to itch.io's free channels.
